@@ -1,52 +1,36 @@
-import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody,
+import React from 'react';
+import { Card, CardImg, CardImgOverlay,
     CardTitle } from 'reactstrap';
-import DishDetail from './DishdetailComponent';
 
-    class Menu extends Component {
+    function RenderMenuItem ({dish, onClick}) {
+        return (
+            <Card
+                onClick={() => onClick(dish.id)}>
+                <CardImg width="100%" src={dish.image} alt={dish.name} />
+                <CardImgOverlay>
+                    <CardTitle>{dish.name}</CardTitle>
+                </CardImgOverlay>
+            </Card>
+        );
+    }
 
-        constructor(props) {
-            super(props);
+    const Menu = (props) => {
 
-            this.state = {
-                selectedDish: null
-            }
-            console.log("menu constructor called")
-        }
-
-        componentDidMount(){
-            console.log("menu componentDidMount called")
-        }
-
-        onDishSelect(dish) {
-            this.setState({ selectedDish: dish});
-        }
-
-        render() {
-            console.log("menu render method called")
-            const menu = this.props.dishes.map((dish) => {
-                return (
-                  <div  className="col-12 col-md-5 m-1" key={dish.id}>
-                    <Card
-                      onClick={() => this.onDishSelect(dish)}>
-                      <CardImg width="100%" src={dish.image} alt={dish.name} />
-                      <CardImgOverlay>
-                          <CardTitle>{dish.name}</CardTitle>
-                      </CardImgOverlay>
-                    </Card>
-                  </div>
-                );
-            });
-
+        const menu = props.dishes.map((dish) => {
             return (
-                <div className="container">
-                    <div className="row">
-                        {menu}
-                    </div>
-                    <DishDetail selectedDish={this.state.selectedDish}/>
+                <div className="col-12 col-md-5 m-1"  key={dish.id}>
+                    <RenderMenuItem dish={dish} onClick={props.onClick} />
                 </div>
             );
-        }
+        });
+
+        return (
+            <div className="container">
+                <div className="row">
+                    {menu}
+                </div>
+            </div>
+        );
     }
 
 export default Menu;
